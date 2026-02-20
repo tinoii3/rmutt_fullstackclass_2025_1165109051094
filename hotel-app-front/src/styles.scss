@@ -1,0 +1,18 @@
+/* 1. กำหนดค่า Variables ของคุณก่อนเสมอ */
+// ลองเปลี่ยนสี Primary เป็นสีทอง (Gold Theme) ให้ดูพรีเมียมสำหรับแอปโรงแรม
+$primary: #d4af37; 
+// หรือถ้าอยากได้สีน้ำเงินเข้มเดิมของคุณ ให้ใช้ $primary: #1e3a8a;
+
+$border-radius: 1rem;
+
+// หากต้องการเปลี่ยนสีอื่นๆ เพิ่มเติม สามารถทำได้ที่นี่
+// $secondary: #6c757d;
+// $success: #198754;
+
+/* 2. จากนั้นจึง Import Bootstrap เข้ามา */
+@import "bootstrap/scss/bootstrap";
+
+/* 3. Global styles อื่นๆ ของคุณเขียนต่อด้านล่างนี้ได้เลย */
+body {
+  background-color: #f8f9fa;
+}
