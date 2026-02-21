@@ -10,7 +10,7 @@ export const routes: Routes = [
   },
 
   {
-    path: 'admin',
+    path: 'admin', //ใครที่ทำส่วน admin ให้มาต่อ path ที่ตรงนี้ใน children
     component: AdminLayout,
     children: [
       { path: 'manage-room', component: ManageRoom },

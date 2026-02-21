@@ -9,7 +9,6 @@ import { LucideAngularModule, FileIcon } from 'lucide-angular';
   selector: 'app-component-page',
   imports: [FontAwesomeModule, LucideAngularModule, ],
   templateUrl: './component-page.html',
-  styleUrl: './component-page.scss',
 })
 export class ComponentPage {
  private http = inject(HttpClient);
