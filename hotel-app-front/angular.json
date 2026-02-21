@@ -31,6 +31,7 @@
               }
             ],
             "styles": ["src/styles.scss"],
+<<<<<<< HEAD
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ],
@@ -44,6 +45,8 @@
             "ssr": {
               "entry": "src/server.ts"
             },
+=======
+>>>>>>> ac586e56e12ef50ebd109123383015825a40afd7
             "polyfills": ["@angular/localize/init"]
           },
           "configurations": {
