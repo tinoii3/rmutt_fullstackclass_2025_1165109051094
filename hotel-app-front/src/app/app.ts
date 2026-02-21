@@ -4,12 +4,13 @@ import Swal from 'sweetalert2';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { LucideAngularModule, FileIcon } from 'lucide-angular';
+import { RouterOutlet } from '@angular/router';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FontAwesomeModule, LucideAngularModule],
+  imports: [FontAwesomeModule, LucideAngularModule, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
