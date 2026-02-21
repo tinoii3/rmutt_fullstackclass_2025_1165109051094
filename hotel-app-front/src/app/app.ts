@@ -1,15 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { RouterOutlet, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
   private http = inject(HttpClient);
+
+  constructor(public router: Router) {}
 
   testApi() {
     console.log('กำลังเรียก API...');
@@ -50,5 +53,8 @@ export class App {
         console.log('การทำงานเสร็จสิ้น');
       }
     });
+  }
+  goToAdmin() {
+    this.router.navigate(['/admin']);
   }
 }

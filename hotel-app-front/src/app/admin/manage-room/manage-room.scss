@@ -1,0 +1,36 @@
+.btn-edit {
+    background-color: #99C2FF;
+    border: 1px solid rgba(20, 115, 255, .2);
+    color: #1473FF;
+}
+
+.btn-edit:hover {
+    background-color: #7ab3ff;
+    color: #0d5fd8;
+}
+
+.btn-delete {
+    background-color: #FFBEBE;
+    border: 1px solid #FF9696;
+    color: #FF0000;
+}
+
+.btn-delete:hover {
+    background-color: #ffa0a0;
+    color: #cc0000;
+}
+
+.badge-checkin {
+    background-color: #E8F3FF;
+    color: #1473FF;
+}
+
+.badge-available {
+    background-color: #e6f9ee;
+    color: #1a8c45;
+}
+
+.badge-unavailable {
+    background-color: #fff0f0;
+    color: #e00;
+}

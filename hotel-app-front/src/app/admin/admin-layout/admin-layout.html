@@ -1,0 +1,53 @@
+<div class="d-flex layout-wrapper">
+
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark sidebar">
+        <a href="javascript:void(0)"
+            class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <i class="bi bi-buildings fs-4 me-2"></i>
+            <span class="fs-5 fw-semibold">Hotel Admin</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto gap-1">
+            <li class="nav-item">
+                <a routerLink="/admin/manage-room" routerLinkActive="active" class="nav-link text-white">
+                    <i class="bi bi-door-open me-2"></i> จัดการห้องพัก
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" class="nav-link text-white">
+                    <i class="bi bi-people me-2"></i> จัดการผู้ใช้งาน
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <div class="dropdown">
+            <a href="javascript:void(0)"
+                class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                data-bs-toggle="dropdown">
+                <i class="bi bi-person-circle fs-5 me-2"></i>
+                <strong>ผู้ดูแลระบบ</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                <li><a class="dropdown-item" href="javascript:void(0)">ตั้งค่า</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="javascript:void(0)">ออกจากระบบ</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="flex-grow-1 bg-light d-flex flex-column content-area">
+
+        <header class="p-3 bg-white border-bottom shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold text-secondary">ระบบจัดการโรงแรม</h5>
+            </div>
+        </header>
+
+        <main class="p-4 flex-grow-1 overflow-auto">
+            <router-outlet></router-outlet>
+        </main>
+
+    </div>
+</div>
