@@ -1,15 +1,22 @@
 import { Component, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { LucideAngularModule, FileIcon } from 'lucide-angular';
+
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  standalone: true,
+  imports: [FontAwesomeModule, LucideAngularModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
   private http = inject(HttpClient);
+  faCoffee = faCoffee;
+  FileIcon = FileIcon;
 
   testApi() {
     console.log('กำลังเรียก API...');
