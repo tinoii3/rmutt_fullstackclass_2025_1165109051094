@@ -110,8 +110,8 @@ http://localhost:3000
 
 Create .env file inside apps/backend:
 
-DATABASE_URL=
-JWT_SECRET=
+DATABASE_URL="MS_TEAM"
+JWT_SECRET="ME_TEAM"
 
 ---
 
