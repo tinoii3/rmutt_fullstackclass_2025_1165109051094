@@ -9,23 +9,7 @@
 
 # Hotel Booking System
 
-Full-Stack Hotel Booking Application built with Angular (Frontend) and Express + Prisma (Backend) using a Monorepo architecture.
-
----
-
-## 🏗 Architecture Overview
-
-project-root/
-│
-├── apps/
-│   ├── frontend/      # Angular
-│   └── backend/       # Express
-│
-├── packages/
-│   └── shared/        # Shared DTOs / Types
-│
-├── docs/              # Documentation
-└── README.md
+Full-Stack Hotel Booking Application.
 
 ---
 
@@ -77,18 +61,6 @@ backend/src/
 - types/          → Custom TypeScript types
 - app.ts          → Express app setup
 - server.ts       → Entry point
-
----
-
-## 🌿 Branch Strategy
-
-- main     → Production-ready branch
-- dev      → Integration branch
-- feature/* → Feature development branches
-
-Example:
-feature/auth-module  
-feature/booking-flow  
 
 ---
 
