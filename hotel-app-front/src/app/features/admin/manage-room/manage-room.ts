@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -21,6 +21,12 @@ interface Room {
   styleUrl: './manage-room.scss',
 })
 export class ManageRoom implements OnInit {
+  @ViewChild('roomModal') roomModalRef!: ElementRef;
+  @ViewChild('deleteModal') deleteModalRef!: ElementRef;
+
+  roomModalInstance: any;
+  deleteModalInstance: any;
+
   // mockup
   rooms: Room[] = [
     { no: '001', type: 'สวีทชูพรีม', floor: 'ชั้น 4', capacity: '3 คน', user: 'สมบูรณ์ กขค', status: 'เช็คอิน' },
@@ -38,6 +44,10 @@ export class ManageRoom implements OnInit {
   pendingDeleteIndex: number | null = null;
   editIndex: number | null = null;
 
+  isDropdownOpen: boolean = false;
+  isRoomModalOpen: boolean = false;
+  isDeleteModalOpen: boolean = false;
+
   f_room_no = '';
   f_floor = '';
   f_type = 'สวีทชูพรีม';
@@ -49,8 +59,14 @@ export class ManageRoom implements OnInit {
     this.filterType('all');
   }
 
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
   filterType(type: string) {
     this.currentFilter = type;
+    this.isDropdownOpen = false;
+
     if (type === 'all') {
       this.filteredRooms = [...this.rooms];
     } else {
@@ -66,8 +82,7 @@ export class ManageRoom implements OnInit {
     this.f_capacity = '';
     this.f_user = '';
     this.f_status = 'ว่าง';
-    const modal = new bootstrap.Modal(document.getElementById('roomModal'));
-    modal.show();
+    this.isRoomModalOpen = true;
   }
 
   openEditModal(room: Room, index: number) {
@@ -78,8 +93,11 @@ export class ManageRoom implements OnInit {
     this.f_capacity = room.capacity;
     this.f_user = room.user;
     this.f_status = room.status;
-    const modal = new bootstrap.Modal(document.getElementById('roomModal'));
-    modal.show();
+    this.isRoomModalOpen = true;
+  }
+
+  closeRoomModal() {
+    this.isRoomModalOpen = false
   }
 
   saveRoom() {
@@ -104,15 +122,17 @@ export class ManageRoom implements OnInit {
     }
 
     this.filterType(this.currentFilter);
-    const modalEl = document.getElementById('roomModal');
-    const modal = bootstrap.Modal.getInstance(modalEl);
-    if (modal) modal.hide();
+    this.closeRoomModal();
   }
 
   openDeleteModal(index: number) {
     this.pendingDeleteIndex = index;
-    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
-    modal.show();
+    this.isDeleteModalOpen = true;
+  }
+
+  closeDeleteModal() {
+    this.pendingDeleteIndex = null;
+    this.isDeleteModalOpen = false;
   }
 
   confirmDelete() {
@@ -121,8 +141,6 @@ export class ManageRoom implements OnInit {
       this.pendingDeleteIndex = null;
     }
     this.filterType(this.currentFilter);
-    const modalEl = document.getElementById('deleteModal');
-    const modal = bootstrap.Modal.getInstance(modalEl);
-    if (modal) modal.hide();
+    this.closeDeleteModal();
   }
 }
