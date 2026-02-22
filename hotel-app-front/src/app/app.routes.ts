@@ -1,25 +1,41 @@
 import { Routes } from '@angular/router';
 import { AdminLayout } from './features/admin/admin-layout/admin-layout';
-import { ManageRoom } from './features/admin/manage-room/manage-room';
 import { ComponentPage } from './core/component-page/component-page';
+import { MainLayoutComponent } from './layouts/main/main-layout-component/main-layout-component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: ComponentPage
+    component: ComponentPage,
+  },
+
+  {
+    path: 'hotel',
+    component: MainLayoutComponent,
+    children: [
+      {
+        path: 'payment',
+        loadComponent: () =>
+          import('./features/payment-page/payment-page').then((m) => m.PaymentPage),
+      },
+    ],
   },
 
   {
     path: 'admin', //ใครที่ทำส่วน admin ให้มาต่อ path ที่ตรงนี้ใน children
     component: AdminLayout,
     children: [
-      { path: 'manage-room', component: ManageRoom },
-      { path: '', redirectTo: 'manage-room', pathMatch: 'full' }
-    ]
+      {
+        path: 'manage-room',
+        loadComponent: () =>
+          import('./features/admin/manage-room/manage-room').then((m) => m.ManageRoom),
+      },
+      { path: '', redirectTo: 'manage-room', pathMatch: 'full' },
+    ],
   },
 
   {
     path: '**',
-    redirectTo: ''
-  }
+    redirectTo: '',
+  },
 ];
