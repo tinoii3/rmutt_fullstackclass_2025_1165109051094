@@ -31,7 +31,7 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"],
+            "styles": ["src/assets/styles.scss"],
             "polyfills": ["@angular/localize/init"]
           },
           "configurations": {
