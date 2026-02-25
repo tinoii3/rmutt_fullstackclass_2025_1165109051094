@@ -1,35 +1,42 @@
 import { prisma } from "../lib/prisma.js";
-import { findUserByUsername } from "../repository/auth.repository.js";
-import { comparePassword, hashPassword } from "../utils/hash.js";
+import {
+  findUserByUsername,
+  findRefreshToken,
+  rotateRefreshToken,
+} from "../repository/auth.repository.js";
+import { comparePassword, hashPassword, hashToken } from "../utils/hash.js";
 import { signToken } from "../utils/jwt.js";
+import { ACCESS_TOKEN_EXPIRE_SECONDS } from "../utils/constants.js";
+import crypto from "crypto";
 
-export const loginService = async (
-  username: string,
-  password: string
-) => {
-
+export const loginService = async (username: string, password: string) => {
   const user = await findUserByUsername(username);
-
-  if (!user) {
-    throw new Error("Invalid username or password");
-  }
+  if (!user) throw new Error("Invalid credentials");
 
   const isValid = await comparePassword(password, user.user_password);
+  if (!isValid) throw new Error("Invalid credentials");
 
-  if (!isValid) {
-    throw new Error("Invalid username or password");
-  }
-
-  const token = signToken({
+  const accessToken = signToken({
     sub: user.id,
-    username: user.user_name,
-    role: user.role
+    role: user.role,
+  });
+
+  const rawRefreshToken = crypto.randomBytes(64).toString("hex");
+
+
+  const hashedRefreshToken = hashToken(rawRefreshToken);
+
+  await prisma.refresh_tokens.create({
+    data: {
+      user_id: user.id,
+      token: hashedRefreshToken,
+      expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    },
   });
 
   return {
-    access_token: token,
-    token_type: "Bearer",
-    expires_in: 3600
+    access_token: accessToken,
+    refresh_token: rawRefreshToken,
   };
 };
 
@@ -38,7 +45,7 @@ export const registerService = async ({
   password,
   email,
   first_name,
-  last_name
+  last_name,
 }: {
   username: string;
   password: string;
@@ -46,7 +53,6 @@ export const registerService = async ({
   first_name?: string;
   last_name?: string;
 }) => {
-
   const existingUser = await findUserByUsername(username);
 
   if (existingUser) {
@@ -56,7 +62,6 @@ export const registerService = async ({
   const hashedPassword = await hashPassword(password);
 
   const result = await prisma.$transaction(async (tx) => {
-
     const user = await tx.users.create({
       data: {
         user_name: username,
@@ -64,14 +69,14 @@ export const registerService = async ({
         email,
         first_name,
         last_name,
-        role: "customer"
-      }
+        role: "customer",
+      },
     });
 
     await tx.customers.create({
       data: {
-        user_id: user.id
-      }
+        user_id: user.id,
+      },
     });
 
     return user;
@@ -80,12 +85,38 @@ export const registerService = async ({
   const token = signToken({
     sub: result.id,
     username: result.user_name,
-    role: result.role
+    role: result.role,
   });
 
   return {
     access_token: token,
     token_type: "Bearer",
-    expires_in: 3600
+    expires_in: ACCESS_TOKEN_EXPIRE_SECONDS,
+  };
+};
+
+export const refreshTokenLogic = async (rawToken: string) => {
+  const hashedToken = hashToken(rawToken);
+
+  const stored = await findRefreshToken(hashedToken);
+  if (!stored) throw new Error("Invalid refresh token");
+
+  if (stored.expires_at < new Date()) {
+    await prisma.refresh_tokens.delete({ where: { token: hashedToken } });
+    throw new Error("Refresh token expired");
+  }
+
+  const newRawToken = crypto.randomBytes(64).toString("hex");
+  const newHashedToken = hashToken(newRawToken);
+
+  await rotateRefreshToken(newHashedToken, hashedToken, stored);
+
+  const newAccessToken = signToken({
+    sub: stored.user_id,
+  });
+
+  return {
+    access_token: newAccessToken,
+    refresh_token: newRawToken
   };
 };
