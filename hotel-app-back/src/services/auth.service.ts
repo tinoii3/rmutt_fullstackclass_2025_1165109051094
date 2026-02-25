@@ -1,8 +1,9 @@
 import { prisma } from "../lib/prisma.js";
 import {
   findUserByUsername,
-  findRefreshToken,
+  findRefreshTokenByHash,
   rotateRefreshToken,
+  logoutUser,
 } from "../repository/auth.repository.js";
 import { comparePassword, hashPassword, hashToken } from "../utils/hash.js";
 import { signToken } from "../utils/jwt.js";
@@ -98,7 +99,7 @@ export const registerService = async ({
 export const refreshTokenLogic = async (rawToken: string) => {
   const hashedToken = hashToken(rawToken);
 
-  const stored = await findRefreshToken(hashedToken);
+  const stored = await findRefreshTokenByHash(hashedToken);
   if (!stored) throw new Error("Invalid refresh token");
 
   if (stored.expires_at < new Date()) {
@@ -120,3 +121,9 @@ export const refreshTokenLogic = async (rawToken: string) => {
     refresh_token: newRawToken
   };
 };
+
+export const logoutService = async (rawToken: string) => {
+    const hashedToken = hashToken(rawToken);
+
+    await logoutUser(hashedToken);
+}

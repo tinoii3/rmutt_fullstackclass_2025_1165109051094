@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { loginService, refreshTokenLogic, registerService } from "../services/auth.service.js";
+import { loginService, logoutService, refreshTokenLogic, registerService } from "../services/auth.service.js";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -26,7 +26,7 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
-export const refreshTokenService = async (req: Request, res: Response) => {
+export const refreshToken = async (req: Request, res: Response) => {
   try {
     const { refresh_token } = req.body;
     if (!refresh_token) throw new Error("Token is required");
@@ -37,3 +37,17 @@ export const refreshTokenService = async (req: Request, res: Response) => {
     res.status(401).json({ message: error.message });
   }
 };
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.body;
+
+    if (token) {
+      await logoutService(token);
+    }
+
+    res.status(200).json({ message: "Logged out successfully"});
+  } catch (error: any) {
+    res.status(500).json({ message: "Something went wrong"});
+  }
+}

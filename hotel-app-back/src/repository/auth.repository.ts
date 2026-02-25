@@ -12,7 +12,7 @@ export const createUser = (data: any) => {
   });
 };
 
-export const findRefreshToken = (token: string) => {
+export const findRefreshTokenByHash = (token: string) => {
     return prisma.refresh_tokens.findUnique({
     where: { token }
   });
@@ -31,4 +31,10 @@ export const rotateRefreshToken = (newHashedToken: string, hashedToken: string, 
       }
     })
   ]);
+}
+
+export const logoutUser = (hashedToken: string) => {
+  return prisma.refresh_tokens.deleteMany({
+    where: { token: hashedToken }
+  });
 }
