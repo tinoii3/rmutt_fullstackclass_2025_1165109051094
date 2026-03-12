@@ -26,8 +26,14 @@
           formControlName="email"
           placeholder="Enter your email"
         />
-        @if (registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
-          <div class="text-danger mt-1">Valid email is required</div>
+        @if (
+          registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']
+        ) {
+          <div class="text-danger mt-1">Email is required</div>
+        }
+
+        @if (registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']) {
+          <div class="text-danger mt-1">Please enter a valid email address</div>
         }
       </div>
 

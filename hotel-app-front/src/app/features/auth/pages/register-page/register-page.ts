@@ -26,7 +26,7 @@ export class RegisterPage {
     private router: Router,
   ) {
     this.registerForm = this.fb.group({
-      email: ['', Validators.email],
+      email: ['', [Validators.email, Validators.required] ],
       username: ['', Validators.required],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required],
