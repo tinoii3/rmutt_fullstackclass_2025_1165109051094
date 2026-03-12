@@ -1,34 +1,40 @@
 <div class="auth-page">
-
   <div class="auth-card">
-
     <div class="auth-header">
       <h3>Create Account</h3>
       <p>Start booking your perfect stay</p>
     </div>
 
-    <form>
-
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
       <div class="form-group mb-3">
-        <label>Full Name</label>
+        <label>Username</label>
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="name"
-          name="name"
-          placeholder="Enter your name"
-        >
+          formControlName="username"
+          placeholder="Enter your Username"
+        />
+        @if (registerForm.get('username')?.touched && registerForm.get('username')?.invalid) {
+          <div class="text-danger mt-1">Username is required</div>
+        }
       </div>
-
       <div class="form-group mb-3">
         <label>Email</label>
         <input
           type="email"
           class="form-control"
-          [(ngModel)]="email"
-          name="email"
+          formControlName="email"
           placeholder="Enter your email"
-        >
+        />
+        @if (
+          registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']
+        ) {
+          <div class="text-danger mt-1">Email is required</div>
+        }
+
+        @if (registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']) {
+          <div class="text-danger mt-1">Please enter a valid email address</div>
+        }
       </div>
 
       <div class="form-group mb-3">
@@ -36,10 +42,12 @@
         <input
           type="password"
           class="form-control"
-          [(ngModel)]="password"
-          name="password"
+          formControlName="password"
           placeholder="Create password"
-        >
+        />
+        @if (registerForm.get('password')?.touched && registerForm.get('password')?.invalid) {
+          <div class="text-danger mt-1">Password is required</div>
+        }
       </div>
 
       <div class="form-group mb-4">
@@ -47,23 +55,20 @@
         <input
           type="password"
           class="form-control"
-          [(ngModel)]="confirmPassword"
-          name="confirmPassword"
+          formControlName="confirmPassword"
           placeholder="Confirm password"
-        >
+        />
+        @if (registerForm.get('confirmPassword')?.errors?.['mismatch']) {
+          <div class="text-danger mt-1">Passwords do not match</div>
+        }
       </div>
 
-      <button class="btn btn-primary w-100 mb-3" (click)="register()">
-        Register
-      </button>
-
+      <button type="submit" class="btn btn-primary w-100 mb-3">Register</button>
     </form>
 
     <div class="auth-footer">
       <span>Already have an account?</span>
       <a routerLink="/auth/login">Login</a>
     </div>
-
   </div>
-
 </div>

@@ -1,7 +1,19 @@
 import * as manageRoomRepo from "../repository/manage-room.repository.js"
 
-export const getAllRooms = async () => {
-    return manageRoomRepo.roomFindAll();
+export const getAllRooms = async (page: number, limit: number) => {
+    const skip = (page - 1) * limit;
+    const take = limit;
+    const { rooms, totalRooms } = await manageRoomRepo.roomFindAll(skip, take);
+    const totalPages = Math.ceil(totalRooms / limit);
+    return {
+        data: rooms,
+        meta: {
+            currentPage: page,
+            itemsPerPage: limit,
+            totalItems: totalRooms,
+            totalPages: totalPages
+        }
+    }
 }
 
 export const getAllRoomTypes = async () => {
@@ -12,14 +24,18 @@ export const createRoom = async (data: any) => {
     return manageRoomRepo.roomCreate(data);
 }
 
+export const createManyRooms = async (data: any[]) => {
+    return manageRoomRepo.roomCreateMany(data);
+}
+
 export const createRoomType = async (data: any) => {
     return manageRoomRepo.roomTypeCreate(data);
 }
 
-export const updateRoom = async (id: string, data: any) => {
+export const updateRoom = async (id: number, data: any) => {
     return manageRoomRepo.roomUpdate(id, data);
 }
 
-export const deleteRoom = async (id: string) => {
+export const deleteRoom = async (id: number) => {
     return manageRoomRepo.roomDelete(id);
 }
