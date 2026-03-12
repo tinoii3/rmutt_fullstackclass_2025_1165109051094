@@ -1,10 +1,12 @@
 import { type Request, type Response } from "express"
 import * as manageRoomService from "../services/manage-room.service.js"
 
-export const getRooms = async (_req: Request, res: Response) => {
+export const getRooms = async (req: Request, res: Response) => {
     try {
-        const room = await manageRoomService.getAllRooms();
-        res.json(room);
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 10;
+        const result = await manageRoomService.getAllRooms(page, limit);
+        res.json(result);
     } catch (error) {
         console.log(error);
         res.status(500).json({ mesage: "Database error" });
@@ -24,8 +26,13 @@ export const getRoomTypes = async (_req: Request, res: Response) => {
 export const createRoom = async (req: Request, res: Response) => {
     try {
         const roomData = req.body;
-        const newRoom = await manageRoomService.createRoom(roomData);
-        res.status(201).json(newRoom);
+        if (Array.isArray(roomData)) {
+            const newRooms = await manageRoomService.createManyRooms(roomData);
+            res.status(201).json({ message: `เพิ่มข้อมูลสำเร็จจำนวน ${newRooms.count} ห้อง` });
+        } else {
+            const newRoom = await manageRoomService.createRoom(roomData);
+            res.status(201).json(newRoom);
+        }
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Failed to create room" });
@@ -45,7 +52,7 @@ export const createRoomType = async (req: Request, res: Response) => {
 
 export const updateRoom = async (req: Request, res: Response) => {
     try {
-        const id = req.params.id as string;
+        const id = parseInt(req.params.id as string, 10);
         const roomData = req.body;
         const updateRoom = await manageRoomService.updateRoom(id, roomData);
         res.json(updateRoom);
@@ -57,7 +64,7 @@ export const updateRoom = async (req: Request, res: Response) => {
 
 export const deleteRoom = async (req: Request, res: Response) => {
     try {
-        const id = req.params.id as string;
+        const id = parseInt(req.params.id as string, 10);
         await manageRoomService.deleteRoom(id);
         res.json({ message: "Room delete successfully"});
     } catch (error) {
