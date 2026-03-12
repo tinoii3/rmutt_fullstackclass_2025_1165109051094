@@ -17,6 +17,8 @@ export const loginService = async (username: string, password: string) => {
   const isValid = await comparePassword(password, user.user_password);
   if (!isValid) throw new Error("Invalid credentials");
 
+  console.log("User authenticated:", user);
+
   const accessToken = signToken({
     sub: user.id,
     role: user.role,
@@ -38,6 +40,7 @@ export const loginService = async (username: string, password: string) => {
   return {
     access_token: accessToken,
     refresh_token: rawRefreshToken,
+    role: user.role
   };
 };
 

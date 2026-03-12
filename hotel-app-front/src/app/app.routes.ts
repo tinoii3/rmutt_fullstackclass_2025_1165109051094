@@ -44,7 +44,7 @@ export const routes: Routes = [
   },
 
   {
-    path: 'admin', //ใครที่ทำส่วน admin ให้มาต่อ path ที่ตรงนี้ใน children
+    path: 'admin',
     component: AdminLayout,
     children: [
       {
