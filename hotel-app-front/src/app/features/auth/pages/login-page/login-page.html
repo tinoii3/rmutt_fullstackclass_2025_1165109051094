@@ -5,30 +5,40 @@
       <p>Sign in to continue booking your stay</p>
     </div>
 
-    <form>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
       <div class="form-group mb-3">
-        <label>Email</label>
+        <label>Username</label>
+
         <input
-          type="email"
+          type="text"
           class="form-control"
-          [(ngModel)]="email"
-          name="email"
-          placeholder="Enter your email"
+          formControlName="username"
+          placeholder="Enter username"
         />
+
+        @if (loginForm.get('username')?.touched && loginForm.get('username')?.invalid) {
+          <div class="text-danger mt-1">Username is required</div>
+        }
       </div>
 
       <div class="form-group mb-4">
         <label>Password</label>
+
         <input
           type="password"
           class="form-control"
-          [(ngModel)]="password"
-          name="password"
-          placeholder="Enter your password"
+          formControlName="password"
+          placeholder="Enter password"
         />
+
+        @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
+          <div class="text-danger mt-1">Password is required</div>
+        }
       </div>
 
-      <button class="btn btn-primary w-100 mb-3" (click)="login()">Login</button>
+      <button type="submit" class="btn btn-primary w-100 mb-3">
+        Login
+      </button>
     </form>
 
     <div class="auth-footer">

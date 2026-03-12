@@ -1,7 +1,20 @@
 import { prisma } from "../lib/prisma.js"
 
-export const roomFindAll = async () => {
-    return prisma.rooms.findMany();
+export const roomFindAll = async (skip: number, take: number) => {
+    const [rooms, totalRooms] = await Promise.all([
+        prisma.rooms.findMany({
+            skip: skip,
+            take: take,
+            orderBy: { room_number: 'asc' },
+            include: { 
+                room_types: true,
+                staff: true
+            }
+        }),
+        prisma.rooms.count()
+    ]);
+
+    return { rooms, totalRooms };
 }
 
 export const roomTypeFindAll = async () => {
@@ -14,21 +27,28 @@ export const roomCreate = async (data: any) => {
     });
 }
 
+export const roomCreateMany = async (data: any) => {
+    return prisma.rooms.createMany({
+        data: data,
+        skipDuplicates: true
+    });
+}
+
 export const roomTypeCreate = async (data: any) => {
     return prisma.room_types.create({
         data: data
     });
 }
 
-export const roomUpdate = async (id: string, data: any) => {
+export const roomUpdate = async (id: number, data: any) => {
     return prisma.rooms.update({
-        where: {id: id},
+        where: { id: id },
         data: data
     });
 }
 
-export const roomDelete = async (id: string) => {
+export const roomDelete = async (id: number) => {
     return prisma.rooms.delete({
-        were: {id: id}
+        where: { id: id }
     });
 }
