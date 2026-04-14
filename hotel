@@ -1,0 +1,16 @@
+server {
+    listen 80;
+    server_name hotel.klaisanit.site;
+
+    root /var/www/hotel/browser;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api {
+        proxy_pass http://localhost:3000;
+        proxy_set_header Host $host;
+    }
+}

@@ -12,10 +12,6 @@ import paymentRoute from "./payment.routes.js";
 
 const router = Router();
 
-router.get("/", (_req, res) => {
-  res.json({ message: "Hello World" });
-});
-
 router.use("/auth", authRoutes);
 
 router.use("/home", homePageRoutes);
