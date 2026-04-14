@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://hotel.klaisanit.site/api',
+  apiUrl: 'https://hotel-api.klaisanit.site',
 };
